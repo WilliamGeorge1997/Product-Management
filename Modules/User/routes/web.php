@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\User\App\Http\Controllers\UserController;
+use Modules\User\App\Http\Controllers\UserAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,11 @@ use Modules\User\App\Http\Controllers\UserController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('user', UserController::class)->names('user');
+Route::group([
+    'prefix' => 'auth',
+], function () {
+    Route::get('register', [UserAuthController::class, 'registerForm'])->name('register.form');
+    Route::post('register', [UserAuthController::class, 'register'])->name('register');
+    Route::get('login', [UserAuthController::class, 'loginForm'])->name('login.form');
+    Route::post('login', [UserAuthController::class, 'login'])->name('login');
 });
