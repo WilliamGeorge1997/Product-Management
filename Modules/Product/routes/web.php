@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Product\App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +13,4 @@ use Modules\Product\App\Http\Controllers\ProductController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('product', ProductController::class)->names('product');
-});
+Route::resource('products', 'ProductController')->only(['index', 'create', 'show', 'edit']);

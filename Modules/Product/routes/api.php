@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('product', fn (Request $request) => $request->user())->name('product');
+Route::group([
+    'namespace' => 'api',
+], function () {
+    Route::resource('products', 'ProductController')->only(['index', 'show', 'store', 'update', 'destroy']);
 });

@@ -15,10 +15,11 @@ use Modules\User\App\Http\Controllers\UserAuthController;
 */
 
 Route::group([
-    'prefix' => 'auth',
+    'prefix' => 'user',
 ], function () {
     Route::get('register', [UserAuthController::class, 'registerForm'])->name('register.form');
     Route::post('register', [UserAuthController::class, 'register'])->name('register');
     Route::get('login', [UserAuthController::class, 'loginForm'])->name('login.form');
     Route::post('login', [UserAuthController::class, 'login'])->name('login');
+    Route::post('logout', [UserAuthController::class, 'logout'])->name('logout');
 });

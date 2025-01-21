@@ -10,7 +10,7 @@ class UserDto
 
     public function __construct($request)
     {
-        $this->name = $request->get('name');
+        if ($request->has('name')) $this->name = $request->get('name');
         $this->email = $request->get('email');
         if ($request->get('password'))
             $this->password = bcrypt($request->get('password'));
@@ -19,8 +19,6 @@ class UserDto
     public function dataFromRequest()
     {
         $data = json_decode(json_encode($this), true);
-        if ($data['name'] == null)
-            unset($data['name']);
         return $data;
     }
 }

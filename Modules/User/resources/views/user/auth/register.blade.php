@@ -9,6 +9,11 @@
 
 @section('content')
     <div class="container">
+        @if (session('error'))
+            <div class="alert alert-danger text-center">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="row vh-100 justify-content-center align-items-center">
             <div class="col-12 col-lg-6">
                 <img src="{{ asset('assets/images/register.jpg') }}" alt="Register" class="img-fluid w-100">
@@ -19,13 +24,13 @@
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email">
+                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email')}} ">
                     </div>
-                    <div class="mb-3">
+                    <div>
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
                             <input type="password" class="form-control" id="password" name="password">
@@ -34,6 +39,7 @@
                             </button>
                         </div>
                     </div>
+                    <p><small>Do you have an email? <a href="{{ route('login.form') }}">Login</a></small></p>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>
                 @if ($errors->any())

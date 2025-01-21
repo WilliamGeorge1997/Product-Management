@@ -1,6 +1,5 @@
 <?php
 
-use Modules\User\App\Models\User;
 
 return [
 
@@ -42,6 +41,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'user-web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'user-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -64,7 +71,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => User::class,
+            'model' => Modules\User\App\Models\User::class,
         ],
 
         // 'users' => [
