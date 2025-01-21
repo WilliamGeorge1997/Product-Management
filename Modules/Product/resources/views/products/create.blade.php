@@ -68,14 +68,13 @@
                     price: document.getElementById('price').value,
                     quantity: document.getElementById('quantity').value,
                     description: document.getElementById('description').value,
-                    _token: csrfToken
                 };
 
                 fetch('/api/products', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                        'Accept': 'application/json',
                         'X-CSRF-TOKEN': csrfToken
                     },
                     body: JSON.stringify(formData)

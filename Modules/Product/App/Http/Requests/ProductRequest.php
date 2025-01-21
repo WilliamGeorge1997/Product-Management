@@ -13,8 +13,8 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer',
+            'price' => 'required|numeric|between:0,99999999.99', // max decimal 8,2
+            'quantity' => 'required|integer|max:4294967295', // max for unsigned int
             'description' => 'required|string',
         ];
     }

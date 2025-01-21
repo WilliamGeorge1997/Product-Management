@@ -17,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'namespace' => 'api',
 ], function () {
-    Route::resource('products', 'ProductController')->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::apiResource('products', 'ProductController');
 });

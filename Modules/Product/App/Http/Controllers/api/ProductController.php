@@ -6,19 +6,22 @@ use Modules\Product\DTO\ProductDto;
 use App\Http\Controllers\Controller;
 use Modules\Product\Service\ProductService;
 use Modules\Product\App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     private $productService;
+
     public function __construct(ProductService $productService)
     {
-        $this->middleware(['auth:sanctum' , 'web']);
-        $this->productService = $productService;
+       $this->middleware(['auth:sanctum']);
+       $this->productService = $productService;
     }
 
     public function index()
     {
         return $this->productService->findAll();
+
     }
 
     public function show($id)

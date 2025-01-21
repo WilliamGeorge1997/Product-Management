@@ -16,13 +16,23 @@ class UserAuthService
     {
         if (auth('user-web')->attempt($data)) {
             $user = auth('user-web')->user();
-            // Create new API token on login
-            $token = $user->createToken('auth-token')->plainTextToken;
+            $user->tokens()->delete();
+            $token = $user->createToken('sanctum_token')->plainTextToken;
             return [
                 'user' => $user,
-                'token' => $token
+                'token' => $token,
             ];
         }
         return null;
+    }
+
+    public function logout()
+    {
+        if (request()->hasCookie('sanctum_token')) {
+            cookie()->queue(cookie()->forget('sanctum_token'));
+        }
+        auth('user-web')->user()->tokens()->delete();
+        auth('user-web')->logout();
+        return true;
     }
 }

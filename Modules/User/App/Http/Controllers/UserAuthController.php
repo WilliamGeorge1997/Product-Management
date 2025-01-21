@@ -4,6 +4,7 @@ namespace Modules\User\App\Http\Controllers;
 
 use Modules\User\DTO\UserDto;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Request;
 use Modules\User\Service\UserAuthService;
 use Modules\User\App\Http\Requests\UserLoginRequest;
 use Modules\User\App\Http\Requests\UserRegisterRequest;
@@ -15,7 +16,6 @@ class UserAuthController extends Controller
     public function __construct(UserAuthService $userAuthService)
     {
         $this->middleware('guest:user-web')->except('logout');
-        $this->middleware('auth:user-web')->only('logout');
         $this->middleware('prevent-back-history');
         $this->userAuthService = $userAuthService;
     }
@@ -43,17 +43,24 @@ class UserAuthController extends Controller
     {
         $data = $request->only(['email', 'password']);
         $response = $this->userAuthService->login($data);
+
         if ($response) {
-            return to_route('products.index')
+            $cookie = cookie('sanctum_token', $response['token'], 60 * 24, '/', null, true, true, false);
+            return redirect()
+                ->route('products.index')
                 ->with('success', 'Welcome back ' . $response['user']->name)
-                ->with('token', $response['token']);
+                ->withCookie($cookie);
         }
         return to_route('login.form')->with('error', 'Invalid credentials');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        auth('user-web')->logout();
-        return to_route('login.form')->with('success', 'You have been logged out successfully');
+        $response = $this->userAuthService->logout();
+        if ($response) {
+            return to_route('login.form')
+                ->with('success', 'You have been logged out successfully');
+        }
+        return to_route('login.form')->with('error', 'Something went wrong');
     }
 }
