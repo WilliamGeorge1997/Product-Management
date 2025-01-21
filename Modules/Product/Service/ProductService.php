@@ -28,12 +28,20 @@ class ProductService
     public function update($id, $data)
     {
         $product = $this->findById($id);
-        return $product->update($data);
+        if (!$product) {
+            return false;
+        }
+        $product->update($data);
+        return true;
     }
 
     public function delete($id)
     {
         $product = $this->findById($id);
-        return $product->delete();
+        if (!$product) {
+            return false;
+        }
+        $product->delete();
+        return true;
     }
 }

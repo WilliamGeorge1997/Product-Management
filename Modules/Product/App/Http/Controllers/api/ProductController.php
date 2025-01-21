@@ -14,14 +14,13 @@ class ProductController extends Controller
 
     public function __construct(ProductService $productService)
     {
-       $this->middleware(['auth:sanctum']);
-       $this->productService = $productService;
+        $this->middleware(['auth:sanctum']);
+        $this->productService = $productService;
     }
 
     public function index()
     {
         return $this->productService->findAll();
-
     }
 
     public function show($id)
@@ -40,12 +39,18 @@ class ProductController extends Controller
     {
         $data = (new ProductDto($request))->dataFromRequest();
         $product = $this->productService->update($id, $data);
-        return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+        if (!$product) {
+            return response()->json(['message' => 'Product not found or update failed', 'status' => false], 404);
+        }
+        return response()->json(['message' => 'Product updated successfully', 'status' => $product], 200);
     }
 
     public function destroy($id)
     {
         $product = $this->productService->delete($id);
-        return response()->json(['message' => 'Product deleted successfully', 'product' => $product], 200);
+        if (!$product) {
+            return response()->json(['message' => 'Product not found or delete failed', 'status' => false], 404);
+        }
+        return response()->json(['message' => 'Product deleted successfully', 'status' => $product], 200);
     }
 }
